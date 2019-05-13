@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+    <table data-toggle="table">
+        <thead>
+        <tr>
+            <th>
+                Name
+                {% include "common/render_ordering.html" with field=filter.form.o field_name='name' %}
+                {% include "common/render_column_search.html" with field=filter.form.name %}
+            </th>
+            <th>Street Name</th>
+            <th>
+                Suburb
+                {% include "common/render_ordering.html" with field=filter.form.o field_name='suburb' %}
+                {% include "common/render_column_search.html" with field=filter.form.suburb %}
+            </th>
+            <th>Postcode</th>
+            <th>State</th>
+            <th>Contact Name</th>
+            <th>
+                Email
+                {% include "common/render_ordering.html" with field=filter.form.o field_name='email' %}
+                {% include "common/render_column_search.html" with field=filter.form.email %}
+            </th>
+            <th>
+                Phone Number
+                {% include "common/render_ordering.html" with field=filter.form.o field_name='phone_number' %}
+                {% include "common/render_column_search.html" with field=filter.form.phone_number %}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td><a href="{% url 'clients:edit' pk=client.pk %}">{{ client.name }}</a></td>
+                <td>{{ client.street_name }}</td>
+                <td>{{ client.suburb }}</td>
+                <td>{{ client.postcode }}</td>
+                <td>{{ client.state }}</td>
+                <td>{{ client.contact_name }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.phone_number }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <div class="d-flex pagination">
+        <span class="pagination__info">
+            {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+        </span>
+        <div class="flex-grow-1">
+
+        </div>
+        {% if is_paginated %}
+            <div class="pagination__buttons">
+                {% if page_obj.has_previous %}
+                    <button type="button" class="btn btn-outline-primary"
+                            data-page="{{ page_obj.previous_page_number }}">
+                        Previous
+                    </button>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% ifequal num page_obj.number %}
+                        <button class="btn btn-primary">{{ num }}</button>
+                    {% else %}
+                        <button class="btn btn-outline-primary" data-page="{{ num }}">{{ num }}</button>
+                    {% endifequal %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <button type="button" class="btn btn-outline-primary" data-page="{{ page_obj.next_page_number }}">
+                        Next
+                    </button>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(function () {
+            $('.pagination button[data-page]').click(function () {
+                const url = new URI(window.location.href);
+                url.setQuery("page", $(this).data('page'));
+
+                window.location.href = url.toString();
+            });
+
+            $('.search-by-column input').keypress(function (event) {
+                const keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode === '13' || keycode === 13) {
+                    const url = new URI(window.location.href).search("");
+
+                    $('.search-by-column input').each(function () {
+                        const $input = $(this);
+                        if ($input.val()) {
+                            url.setQuery($input.prop('name'), $input.val());
+                        }
+                    });
+
+                    window.location.href = url.toString();
+                }
+            });
+
+            $('.ordering').click(function () {
+                const url = new URI(window.location.href)
+                    .setQuery('page', 1);
+
+                const $ordering = $(this);
+                if ($ordering.hasClass('active')) {
+                    url.removeQuery($ordering.data('field'));
+                } else {
+                    url.setQuery('o', $ordering.data('field'));
+                }
+
+                window.location.href = url.toString();
+            });
+        });
+    </script>
+{% endblock %}

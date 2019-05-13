@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>WebIT Django assessment</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>WebIT Django assessment</h1>
     <h2>Purpose</h2>
-    <p>To check that your knowledge/research ability to use the Django framework meets what's required of a python role with WebIT.</p>
+    <p>To check that your knowledge/research ability to use the Django framework meets what's required of a python role
+        with WebIT.</p>
 
     <h2>Assessments</h2>
     <ol>
@@ -17,7 +15,9 @@
             <li>a contact name</li>
             <li>an email address</li>
             <li>a phone number</li>
-            <li>Notes: the most commonly queried fields are suburb, client name and email address. There should be no duplicate client names.</li>
+            <li>Notes: the most commonly queried fields are suburb, client name and email address. There should be no
+                duplicate client names.
+            </li>
         </ul>
         <li>Write a view to create a new Client via a basic HTML form. Required fields for a client include:</li>
         <ul>
@@ -36,6 +36,4 @@
             <li>each record should link to the update view from 3</li>
         </ul>
     </ol>
-
-</body>
-</html>
+{% endblock %}

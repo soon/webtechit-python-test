@@ -1,0 +1,6 @@
+<span class="ordering-container">
+    <i class="fas fa-angle-up ordering ordering--asc {% if field_name in field.value %}active{% endif %}"
+       data-field="{{ field_name }}"></i>
+    <i class="fas fa-angle-down ordering ordering--desc {% if '-'|add:field_name in field.value %}active{% endif %}"
+       data-field="{{ '-'|add:field_name }}"></i>
+</span>

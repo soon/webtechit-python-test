@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'python_test'
+
+    'widget_tweaks',
+    'django_filters',
+    'phonenumber_field',
+
+    'python_test',
 ]
 
 MIDDLEWARE = [
